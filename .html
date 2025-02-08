@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Quiz App</title>
+    <style>
+        * {
+            margin: 1.5;
+            padding: 1.5;
+           box-sizing: content-box;
+        }
+
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: firebrick;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .quiz-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: orange;
+            border-radius: 7.6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background-color: red;
+            padding: 29px;
+            color: white;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 2rem;
+        }
+
+        .quiz-body {
+            padding: 29px;
+        }
+
+        .question-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question-container p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .answer-options button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 3px solid violet;
+            background-color: #f1f1f1;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .answer-options button:hover {
+            background-color: #ff00ff;
+        }
+
+        .quiz-footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f4f7fc;
+        }
+
+        .next-btn {
+            padding: 10px 20px;
+            background-color: #ff00ff;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1> My Quiz app</h1>
+        </div>
+        <div class="quiz-body">
+            <div id="question-container" class="question-container">
+                <p id="question">Loading question...</p>
+                <div class="answer-options">
+                    <button class="answer-btn" onclick="checkAnswer(0)">Option 1</button>
+                    <button class="answer-btn" onclick="checkAnswer(1)">Option 2</button>
+                    <button class="answer-btn" onclick="checkAnswer(2)">Option 3</button>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="quiz-footer">
+            <button id="next-btn" class="next-btn" onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            {
+                question: "What is the capital of India?",
+                options: ["Berlin", "Madrid", "New Delhi", "Rome"],
+                answer: 2
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Jupiter", "Venus"],
+                answer: 1
+            },
+            {
+                question: "what is value of 2+2/2'?",
+                options: ["3","6","7","8"],
+                answer: 0
+            },
+            
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionContainer = document.getElementById('question-container');
+            const questionText = quizQuestions[currentQuestion].question;
+            const options = quizQuestions[currentQuestion].options;
+            
+            // Update question text
+            questionContainer.querySelector('p').innerText = questionText;
+
+            // Update options
+            const buttons = questionContainer.querySelectorAll('.answer-btn');
+            buttons.forEach((button, index) => {
+                button.innerText = options[index];
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const correctAnswer = quizQuestions[currentQuestion].answer;
+            if (selectedOption === correctAnswer) {
+                score++;
+            }
+            document.getElementById('next-btn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < quizQuestions.length) {
+                loadQuestion();
+                document.getElementById('next-btn').style.display = 'none';
+            } else {
+                alert(`Quiz end! Your score: ${score}out of${quizQuestions.length}`);
+                resetQuiz();
+            }
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            loadQuestion();
+            document.getElementById('next-btn').style.display = 'none';
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
+
+
